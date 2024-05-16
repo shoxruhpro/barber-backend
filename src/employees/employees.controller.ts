@@ -37,7 +37,7 @@ export class EmployeesController {
   @Post()
   create(
     @Body() createEmployeeDto: CreateEmployeeDto,
-    @UploadedFile() photo: Express.Multer.File,
+    @UploadedFile() photo: any,
   ) {
     return this.employeesService.create({
       photo: photo.filename,
@@ -61,7 +61,7 @@ export class EmployeesController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
-    @UploadedFile() photo: Express.Multer.File,
+    @UploadedFile() photo: any,
   ) {
     const payload: Partial<UpdateEmployeeDto> & { photo?: string } = {
       ...updateEmployeeDto,
