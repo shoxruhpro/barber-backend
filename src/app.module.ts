@@ -12,6 +12,8 @@ import { join } from 'path';
 import { ServicesModule } from './services/services.module';
 import { Service } from './services/entities/service.entity';
 import { configs } from './config';
+import { ContactModule } from './contact/contact.module';
+import { Contact } from './contact/entities/contact.entity';
 
 @Module({
   imports: [
@@ -25,13 +27,14 @@ import { configs } from './config';
       username: configs.DB_USERNAME,
       password: configs.DB_PASS,
       database: configs.DB_NAME,
-      entities: [Employee, Service, Admin],
+      entities: [Employee, Service, Admin, Contact],
       synchronize: true,
     }),
     EmployeesModule,
     AdminModule,
     AuthModule,
     ServicesModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],
