@@ -3,7 +3,7 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Service, ServiceType } from './entities/service.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class ServicesService {
@@ -16,8 +16,10 @@ export class ServicesService {
     return this.serviceRepository.save(createServiceDto);
   }
 
-  findAll(type?: ServiceType) {
-    return this.serviceRepository.find({ where: { serviceType: type } });
+  findAll(type?: ServiceType, text?: string) {
+    const condition: Record<string, any> = { serviceType: type };
+    if (text) condition.name = ILike(`%${text}%`);
+    return this.serviceRepository.find({ where: condition });
   }
 
   findOne(id: number) {

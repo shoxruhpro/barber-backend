@@ -10,6 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiTags } from '@nestjs/swagger';
 
 const fileInterceptor = FileInterceptor('photo', {
   storage: diskStorage({
@@ -28,6 +30,7 @@ const fileInterceptor = FileInterceptor('photo', {
   }),
 });
 
+@ApiTags('employees')
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
@@ -46,8 +49,8 @@ export class EmployeesController {
   }
 
   @Get()
-  findAll() {
-    return this.employeesService.findAll();
+  findAll(@Query('search') text: string) {
+    return this.employeesService.findAll(text);
   }
 
   @Get(':id')

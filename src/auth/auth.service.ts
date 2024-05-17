@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AdminService } from 'src/admin/admin.service';
 import { JwtService } from '@nestjs/jwt';
+import { SignInAdminDto } from 'src/admin/dto/signin-admin.dto';
 // import { CreateAuthDto } from './dto/create-auth.dto';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
 
@@ -11,9 +12,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const admin = await this.adminService.findOne(username);
-    if (admin && admin.password === pass) {
+  async validateUser(signInAdminDto: SignInAdminDto): Promise<any> {
+    const admin = await this.adminService.findOne(signInAdminDto.username);
+
+    if (admin && admin.password === signInAdminDto.password) {
       // const { password, ...result } = admin;
       return admin;
     }

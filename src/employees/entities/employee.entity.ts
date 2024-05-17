@@ -23,7 +23,7 @@ export class Employee {
 
   @ManyToMany(() => Service, (Service) => Service.employees, {
     onUpdate: 'NO ACTION',
-    onDelete: 'NO ACTION',
+    onDelete: 'CASCADE',
   })
   @JoinTable()
   services?: Service[];

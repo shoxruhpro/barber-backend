@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { Service, ServiceType } from 'src/services/entities/service.entity';
 
@@ -19,8 +19,10 @@ export class EmployeesService {
     return this.employeeRepository.save(createEmployeeDto);
   }
 
-  findAll() {
-    return this.employeeRepository.find();
+  findAll(text: string) {
+    return this.employeeRepository.find({
+      where: text ? { fullname: ILike(`%${text}%`) } : {},
+    });
   }
 
   findOne(id: number) {
@@ -37,23 +39,29 @@ export class EmployeesService {
     const employee = await this.employeeRepository.findOneBy({ id });
 
     const services: Service[] = [];
-    for await (const serviceId of updateEmployeeDto.serviceIds) {
-      const service = await this.serviceRepository.findOneBy({
-        id: +serviceId,
-      });
 
-      if (service.serviceType === ServiceType.TOP)
-        throw new BadRequestException(
-          "TOP xizmat turini xodimga bog'lash mumkin emas.",
-        );
+    if (updateEmployeeDto.serviceIds)
+      for await (const serviceId of updateEmployeeDto.serviceIds) {
+        const service = await this.serviceRepository.findOneBy({
+          id: +serviceId,
+        });
 
-      services.push(service);
-    }
+        if (service.serviceType === ServiceType.TOP)
+          throw new BadRequestException(
+            "TOP xizmat turini xodimga bog'lash mumkin emas.",
+          );
 
-    return this.employeeRepository.save({
-      ...employee,
-      services,
-    });
+        services.push(service);
+      }
+
+    if (updateEmployeeDto.fullname)
+      employee.fullname = updateEmployeeDto.fullname;
+    if (updateEmployeeDto.instagram)
+      employee.instagram = updateEmployeeDto.instagram;
+    if (updateEmployeeDto.photo) employee.photo = updateEmployeeDto.photo;
+    if (services.length > 0) employee.services = services;
+
+    return this.employeeRepository.save(employee);
   }
 
   remove(id: number) {

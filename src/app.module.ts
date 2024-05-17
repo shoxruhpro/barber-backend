@@ -5,7 +5,6 @@ import { EmployeesModule } from './employees/employees.module';
 import { AdminModule } from './admin/admin.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Employee } from './employees/entities/employee.entity';
-import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { Admin } from './admin/entities/admin.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -16,7 +15,6 @@ import { configs } from './config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
