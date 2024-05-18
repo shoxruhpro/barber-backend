@@ -21,7 +21,7 @@ export class Employee {
   @Column({ length: 255 })
   instagram?: string;
 
-  @ManyToMany(() => Service, (Service) => Service.employees, {
+  @ManyToMany(() => Service, (service) => service.employees, {
     onUpdate: 'NO ACTION',
     onDelete: 'CASCADE',
   })

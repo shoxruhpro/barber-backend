@@ -14,9 +14,19 @@ import { Service } from './services/entities/service.entity';
 import { configs } from './config';
 import { ContactModule } from './contact/contact.module';
 import { Contact } from './contact/entities/contact.entity';
+import { ReservationsModule } from './reservations/reservations.module';
+import { Reservation } from './reservations/entities/reservation.entity';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 500,
+      },
+    ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
@@ -27,7 +37,7 @@ import { Contact } from './contact/entities/contact.entity';
       username: configs.DB_USERNAME,
       password: configs.DB_PASS,
       database: configs.DB_NAME,
-      entities: [Employee, Service, Admin, Contact],
+      entities: [Employee, Service, Admin, Contact, Reservation],
       synchronize: true,
     }),
     EmployeesModule,
@@ -35,8 +45,15 @@ import { Contact } from './contact/entities/contact.entity';
     AuthModule,
     ServicesModule,
     ContactModule,
+    ReservationsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

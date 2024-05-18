@@ -1,5 +1,12 @@
 import { Employee } from 'src/employees/entities/employee.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Reservation } from 'src/reservations/entities/reservation.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum ServiceType {
   AKA = 'aka',
@@ -27,6 +34,11 @@ export class Service {
     default: ServiceType.AKA,
   })
   serviceType: ServiceType;
+
+  @ManyToOne(() => Reservation, (reservation) => reservation.services, {
+    onDelete: 'SET NULL',
+  })
+  reservation: Reservation;
 
   @ManyToMany(() => Employee, (Employee) => Employee.services, {
     onUpdate: 'NO ACTION',

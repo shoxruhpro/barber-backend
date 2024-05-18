@@ -49,8 +49,11 @@ export class EmployeesController {
   }
 
   @Get()
-  findAll(@Query('search') text: string) {
-    return this.employeesService.findAll(text);
+  findAll(
+    @Query('search') text: string,
+    @Query('serviceIds') serviceIds: string[],
+  ) {
+    return this.employeesService.findAll(text, serviceIds);
   }
 
   @Get(':id')

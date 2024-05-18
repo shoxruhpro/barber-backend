@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository, In } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { Service, ServiceType } from 'src/services/entities/service.entity';
 
@@ -19,9 +19,18 @@ export class EmployeesService {
     return this.employeeRepository.save(createEmployeeDto);
   }
 
-  findAll(text: string) {
+  findAll(text: string, serviceIds: string[]) {
+    console.log(serviceIds);
+    const findOptionsWhere: FindOptionsWhere<Employee> = {};
+
+    if (text) findOptionsWhere.fullname = ILike(`%${text}%`);
+    if (serviceIds?.length > 0)
+      findOptionsWhere.services = {
+        id: In(serviceIds.map((value: string) => ~~value)),
+      };
+
     return this.employeeRepository.find({
-      where: text ? { fullname: ILike(`%${text}%`) } : {},
+      where: findOptionsWhere,
     });
   }
 
