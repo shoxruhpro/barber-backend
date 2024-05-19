@@ -47,10 +47,14 @@ export class ReservationsService {
     });
   }
 
-  findTimes(employeeId: number) {
-    return this.reservationRepository.find({
-      where: { employee: { id: employeeId } },
+  async findTimes(employeeId: number, date: Date) {
+    const data = await this.reservationRepository.find({
+      where: { employee: { id: employeeId }, date },
       select: { times: true },
+    });
+
+    return data.flatMap((value) => {
+      return value.times;
     });
   }
 
@@ -59,7 +63,7 @@ export class ReservationsService {
   }
 
   update(id: number, updateReservationDto: UpdateReservationDto) {
-    return `This action updates a #${id} reservation`;
+    return this.reservationRepository.update(id, updateReservationDto);
   }
 
   remove(id: number) {

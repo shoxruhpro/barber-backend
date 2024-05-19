@@ -32,7 +32,7 @@ export class Reservation {
   @JoinColumn()
   employee?: Employee;
 
-  @Column()
+  @Column('date')
   date: Date;
 
   @Column('simple-array')

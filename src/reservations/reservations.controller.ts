@@ -31,10 +31,10 @@ export class ReservationsController {
 
   @Get('times')
   findTimes(
-    @Query('employeeId', ParseIntPipe)
-    employeeId: number,
+    @Query('employeeId', ParseIntPipe) employeeId: number,
+    @Query('date') date: Date,
   ) {
-    return this.reservationsService.findTimes(employeeId);
+    return this.reservationsService.findTimes(employeeId, date);
   }
 
   @Get(':id')
