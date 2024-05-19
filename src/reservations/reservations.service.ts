@@ -47,6 +47,13 @@ export class ReservationsService {
     });
   }
 
+  findTimes(employeeId: number) {
+    return this.reservationRepository.find({
+      where: { employee: { id: employeeId } },
+      select: { times: true },
+    });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} reservation`;
   }

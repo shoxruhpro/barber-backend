@@ -20,7 +20,6 @@ export class EmployeesService {
   }
 
   findAll(text: string, serviceIds: string[]) {
-    console.log(serviceIds);
     const findOptionsWhere: FindOptionsWhere<Employee> = {};
 
     if (text) findOptionsWhere.fullname = ILike(`%${text}%`);
