@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { Reservation } from './entities/reservation.entity';
@@ -28,11 +28,14 @@ export class ReservationsService {
       services.push(service);
     }
 
-    const employee: Employee = createReservationDto.employeeId
-      ? await this.employeeRepostitory.findOneBy({
-          id: createReservationDto.employeeId,
-        })
-      : null;
+    let employee: Employee = null;
+    if (createReservationDto.employeeId) {
+      employee = await this.employeeRepostitory.findOneBy({
+        id: createReservationDto.employeeId,
+      });
+
+      if (!employee) throw new NotFoundException('Employee topilmadi.');
+    }
 
     return this.reservationRepository.save({
       ...createReservationDto,
