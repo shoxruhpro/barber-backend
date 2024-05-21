@@ -1,13 +1,6 @@
 import { Employee } from 'src/employees/entities/employee.entity';
 import { Reservation } from 'src/reservations/entities/reservation.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ServiceType {
   AKA = 'aka',

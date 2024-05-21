@@ -3,10 +3,8 @@ import { Service } from 'src/services/entities/service.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -32,7 +30,7 @@ export class Reservation {
   @JoinTable()
   services: Service[];
 
-  @OneToOne(() => Employee, { createForeignKeyConstraints: false })
+  @OneToOne(() => Employee)
   employeeId?: number;
 
   @Column('date')
