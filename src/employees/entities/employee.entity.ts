@@ -22,9 +22,9 @@ export class Employee {
   instagram?: string;
 
   @ManyToMany(() => Service, (service) => service.employees, {
-    onUpdate: 'NO ACTION',
-    onDelete: 'CASCADE',
+    // onDelete: 'SET NULL',
+    // onUpdate: 'SET NULL',
   })
   @JoinTable()
-  services?: Service[];
+  services: Service[];
 }

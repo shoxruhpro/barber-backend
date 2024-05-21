@@ -3,6 +3,7 @@ import { Reservation } from 'src/reservations/entities/reservation.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -35,14 +36,15 @@ export class Service {
   })
   serviceType: ServiceType;
 
-  @ManyToOne(() => Reservation, (reservation) => reservation.services, {
+  @ManyToMany(() => Reservation, (reservation) => reservation.services, {
     onDelete: 'SET NULL',
+    onUpdate: 'SET NULL',
   })
-  reservation: Reservation;
+  reservation?: Reservation[];
 
-  @ManyToMany(() => Employee, (Employee) => Employee.services, {
-    onUpdate: 'NO ACTION',
-    onDelete: 'NO ACTION',
+  @ManyToMany(() => Employee, (employee) => employee.services, {
+    // onDelete: 'SET NULL',
+    // onUpdate: 'SET NULL',
   })
-  employees?: Employee[];
+  employees: Employee[];
 }

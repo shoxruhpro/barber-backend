@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -45,6 +49,7 @@ export class EmployeesService {
     updateEmployeeDto: Partial<UpdateEmployeeDto> & { photo?: string },
   ) {
     const employee = await this.employeeRepository.findOneBy({ id });
+    if (!employee) throw new NotFoundException();
 
     const services: Service[] = [];
 

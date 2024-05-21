@@ -43,13 +43,13 @@ export class ReservationsService {
 
   findAll() {
     return this.reservationRepository.find({
-      relations: { employee: true, services: true },
+      relations: { services: true },
     });
   }
 
   async findTimes(employeeId: number, date: Date) {
     const data = await this.reservationRepository.find({
-      where: { employee: { id: employeeId }, date },
+      where: { employeeId, date },
       select: { times: true },
       order: { date: { direction: 'DESC' } },
     });

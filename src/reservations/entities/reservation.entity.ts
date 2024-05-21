@@ -4,6 +4,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -23,14 +25,15 @@ export class Reservation {
   @Column({ length: 255 })
   comment?: string;
 
-  @OneToMany(() => Service, (service) => service.reservation, {
-    nullable: false,
+  @ManyToMany(() => Service, {
+    // nullable: false,
+    cascade: true,
   })
+  @JoinTable()
   services: Service[];
 
-  @OneToOne(() => Employee, { nullable: true, onDelete: 'CASCADE' })
-  @JoinColumn()
-  employee?: Employee;
+  @OneToOne(() => Employee, { createForeignKeyConstraints: false })
+  employeeId?: number;
 
   @Column('date')
   date: Date;
