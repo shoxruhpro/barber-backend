@@ -38,7 +38,7 @@ import { APP_GUARD } from '@nestjs/core';
       password: configs.DB_PASS,
       database: configs.DB_NAME,
       entities: [Employee, Service, Admin, Contact, Reservation],
-      synchronize: true, //process.env.NODE_ENV !== 'production',
+      synchronize: false,
     }),
     EmployeesModule,
     AdminModule,
