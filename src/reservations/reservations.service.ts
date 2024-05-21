@@ -51,6 +51,7 @@ export class ReservationsService {
     const data = await this.reservationRepository.find({
       where: { employee: { id: employeeId }, date },
       select: { times: true },
+      order: { date: { direction: 'DESC' } },
     });
 
     return data.flatMap((value) => {
