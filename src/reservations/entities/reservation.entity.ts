@@ -28,7 +28,7 @@ export class Reservation {
   })
   services: Service[];
 
-  @OneToOne(() => Employee, { nullable: true })
+  @OneToOne(() => Employee, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn()
   employee?: Employee;
 
