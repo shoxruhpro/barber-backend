@@ -7,6 +7,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { ServiceType } from '../entities/service.entity';
 
 export class CreateServiceDto {
   @ApiProperty({ minLength: 1, maxLength: 255 })
@@ -29,5 +30,5 @@ export class CreateServiceDto {
 
   @ApiProperty()
   @IsString()
-  serviceType: any;
+  serviceType: ServiceType;
 }
