@@ -31,7 +31,7 @@ export class Reservation {
   @JoinTable()
   services: Service[];
 
-  @OneToOne(() => Employee)
+  @OneToOne(() => Employee, { createForeignKeyConstraints: false })
   @JoinColumn()
   employee?: Employee;
 
