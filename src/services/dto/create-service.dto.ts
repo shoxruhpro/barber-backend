@@ -26,4 +26,8 @@ export class CreateServiceDto {
   @Min(15)
   @Max(300)
   duration: number;
+
+  @ApiProperty()
+  @IsString()
+  serviceType: any;
 }
