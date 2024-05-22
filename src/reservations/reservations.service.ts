@@ -46,7 +46,7 @@ export class ReservationsService {
 
   findAll() {
     return this.reservationRepository.find({
-      relations: { services: true },
+      relations: { services: true, employee: true },
     });
   }
 
