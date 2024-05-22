@@ -3,6 +3,7 @@ import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import {
+  ApiBasicAuth,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -13,6 +14,7 @@ import {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiBasicAuth()
   @ApiOkResponse({
     description: 'Tizimga kirish muvaffaqqiyatli amalga oshirilganida.',
   })

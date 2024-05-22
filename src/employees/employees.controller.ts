@@ -19,7 +19,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 const fileInterceptor = FileInterceptor('photo', {
   storage: diskStorage({
@@ -35,6 +35,7 @@ const fileInterceptor = FileInterceptor('photo', {
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(fileInterceptor)
   @Post()
@@ -61,6 +62,7 @@ export class EmployeesController {
     return this.employeesService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(fileInterceptor)
   @Patch(':id')
@@ -78,6 +80,7 @@ export class EmployeesController {
     return this.employeesService.update(id, payload);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
