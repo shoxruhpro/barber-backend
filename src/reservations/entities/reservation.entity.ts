@@ -3,6 +3,7 @@ import { Service } from 'src/services/entities/service.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToOne,
@@ -31,7 +32,8 @@ export class Reservation {
   services: Service[];
 
   @OneToOne(() => Employee)
-  employeeId?: number;
+  @JoinColumn()
+  employee?: Employee;
 
   @Column('date')
   date: Date;

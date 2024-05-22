@@ -52,10 +52,12 @@ export class ReservationsService {
 
   async findTimes(employeeId: number, date: Date) {
     const data = await this.reservationRepository.find({
-      where: { employeeId, date },
+      where: { employee: { id: employeeId }, date },
       select: { times: true },
       order: { date: { direction: 'DESC' } },
     });
+
+    if (!data) throw new NotFoundException();
 
     return data.flatMap((value) => {
       return value.times;
