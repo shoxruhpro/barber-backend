@@ -2,6 +2,7 @@ import {
   IsDateString,
   IsInt,
   IsMilitaryTime,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   MaxLength,
@@ -24,8 +25,9 @@ export class CreateReservationDto {
   @IsInt({ each: true })
   serviceIds: number[];
 
+  @IsOptional()
   @IsInt()
-  employeeId?: number;
+  employeeId?: number | null;
 
   @IsDateString()
   date: Date;
