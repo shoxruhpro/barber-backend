@@ -19,7 +19,19 @@ export class EmployeesService {
     private readonly serviceRepository: Repository<Service>,
   ) {}
 
-  create(createEmployeeDto: Partial<CreateEmployeeDto> & { photo: string }) {
+  async create(
+    createEmployeeDto: Partial<CreateEmployeeDto> & { photo: string },
+  ) {
+    const services: Service[] = [];
+
+    if (createEmployeeDto.serviceIds)
+      for await (const serviceId of createEmployeeDto.serviceIds) {
+        const service = await this.serviceRepository.findOneBy({
+          id: +serviceId,
+        });
+
+        services.push(service);
+      }
     return this.employeeRepository.save(createEmployeeDto);
   }
 
