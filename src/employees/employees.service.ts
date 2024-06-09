@@ -1,14 +1,10 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, Repository, In } from 'typeorm';
 import { Employee } from './entities/employee.entity';
-import { Service, ServiceType } from 'src/services/entities/service.entity';
+import { Service } from 'src/services/entities/service.entity';
 
 @Injectable()
 export class EmployeesService {
@@ -70,11 +66,6 @@ export class EmployeesService {
         const service = await this.serviceRepository.findOneBy({
           id: +serviceId,
         });
-
-        if (service.serviceType === ServiceType.TOP)
-          throw new BadRequestException(
-            "TOP xizmat turini xodimga bog'lash mumkin emas.",
-          );
 
         services.push(service);
       }
